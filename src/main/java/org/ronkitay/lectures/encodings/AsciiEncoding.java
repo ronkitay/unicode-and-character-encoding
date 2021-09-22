@@ -2,11 +2,16 @@ package org.ronkitay.lectures.encodings;
 
 import java.nio.charset.StandardCharsets;
 
+import static org.ronkitay.lectures.encodings.BytesHelper.showBytes;
+
 /**
  * @author Ron Kitay
  * @since 10-Sep-2021.
  */
 public class AsciiEncoding {
+
+    private static final byte LOWERCASE_A = 97;
+    private static final byte UPPERCASE_A = 65;
 
     public static void main(String[] args) {
         backspaceDemo();
@@ -40,11 +45,19 @@ public class AsciiEncoding {
     }
 
     private static void crlfDemo() {
+        crDemo();
+        System.out.println("----------------------------------------");
+        lfDemo();
+    }
+
+    private static void crDemo() {
         var carrigeReturnDemo = new String(new byte[] {'h', 'e', 'l', 'l', 'o', 13, 'w', 'o', 'r', 'l', 'd'}, StandardCharsets.US_ASCII);
         System.out.printf("The string 'hello\\13world' is printed as:%n%s%neven though it has %d characters.%n",
                 carrigeReturnDemo,
                 carrigeReturnDemo.length());
-        System.out.println("----------------------------------------");
+    }
+
+    private static void lfDemo() {
         var lineFeedDemo = new String(new byte[] {'h', 'e', 'l', 'l', 'o', 10, 'w', 'o', 'r', 'l', 'd'}, StandardCharsets.US_ASCII);
         System.out.printf("The string 'hello\\10world' is printed as:%n%s%nThis may work differently depending on the platform!.%n",
                 lineFeedDemo);
@@ -52,20 +65,36 @@ public class AsciiEncoding {
 
 
     private static void lettersDemo() {
-        byte lowercaseA = 97;
-        byte uppercaseA = 65;
-        var lowercaseLettersDemo = new String(new byte[]{lowercaseA, (byte) (lowercaseA + 1), (byte) (lowercaseA + 2)},
-                StandardCharsets.US_ASCII);
-        System.out.printf("Lowercase letters: %s%n", lowercaseLettersDemo);
+        lowercaseLettersDemo();
+        uppercaseLettersDemo();
+        toLowerDemo();
+    }
 
-        var uppercaseLettersDemo = new String(new byte[]{uppercaseA, (byte) (uppercaseA + 1), (byte) (uppercaseA + 2)},
+    private static void uppercaseLettersDemo() {
+        var uppercaseLettersDemo = new String(new byte[]{ UPPERCASE_A, (byte) ( UPPERCASE_A + 1), (byte) ( UPPERCASE_A + 2)},
                 StandardCharsets.US_ASCII);
         System.out.printf("Uppercase letters: %s%n", uppercaseLettersDemo);
+    }
 
-        var toLowerDiff = lowercaseA - uppercaseA;
-        var toLowerCaseDemo = new String(new byte[]{(byte) (uppercaseA + toLowerDiff), (byte) (uppercaseA + 1 + toLowerDiff), (byte) (uppercaseA + 2 + toLowerDiff)},
+    private static void lowercaseLettersDemo() {
+        var lowercaseLettersDemo = new String(new byte[]{ LOWERCASE_A, (byte) ( LOWERCASE_A + 1), (byte) ( LOWERCASE_A + 2)},
                 StandardCharsets.US_ASCII);
-        System.out.printf("Uppercase letters as lowercase: %s%n", toLowerCaseDemo);
+        System.out.printf("Lowercase letters: %s%n", lowercaseLettersDemo);
+    }
+
+    private static void toLowerDemo() {
+        var toLowerDiff =  LOWERCASE_A - UPPERCASE_A;
+
+        byte[] bytesForUppercase = {UPPERCASE_A, (byte) (UPPERCASE_A + 1), (byte) (UPPERCASE_A + 2)};
+        var uppercaseLetters = new String(bytesForUppercase,StandardCharsets.US_ASCII);
+
+        byte [] bytesForLowercase = new byte[bytesForUppercase.length];
+        for (int i = 0; i < bytesForUppercase.length; i++) {
+            bytesForLowercase[i] = (byte) (bytesForUppercase[i] + toLowerDiff);
+        }
+
+        var toLowerCaseDemo = new String(bytesForLowercase,StandardCharsets.US_ASCII);
+        System.out.printf("Uppercase letters '%s' as lowercase are: %s%n", uppercaseLetters, toLowerCaseDemo);
     }
 
 }
