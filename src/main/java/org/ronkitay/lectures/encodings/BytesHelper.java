@@ -10,6 +10,10 @@ public class BytesHelper {
     static String showBytes(String string, Charset charset) {
         byte[] bytes = string.getBytes(charset);
 
+        return printBytes(bytes);
+    }
+
+    public static String printBytes(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
 
